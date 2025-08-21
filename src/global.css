@@ -3,13 +3,13 @@
 @tailwind utilities;
 
 h1 {
-  @apply text-center text-4xl font-semibold;
+    @apply text-center text-4xl font-semibold;
 }
 
 .yellow-border {
-  @apply border-2 border-yellow-400;
+    @apply border-2 border-yellow-400;
 }
 
 .auto-grow {
-  field-sizing: content;
+    field-sizing: content;
 }
