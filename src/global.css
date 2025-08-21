@@ -1,1 +1,15 @@
-@import "tailwindcss";
+@import 'tailwindcss';
+
+@tailwind utilities;
+
+h1 {
+  @apply text-center text-4xl font-semibold;
+}
+
+.yellow-border {
+  @apply border-2 border-yellow-400;
+}
+
+.auto-grow {
+  field-sizing: content;
+}
