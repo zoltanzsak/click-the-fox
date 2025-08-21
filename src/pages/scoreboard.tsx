@@ -1,3 +1,3 @@
 export const ScoreBoard = () => {
-  return <>scoreboard</>;
+    return <>scoreboard</>;
 };
