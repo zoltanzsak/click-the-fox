@@ -1,32 +1,35 @@
 import type { ImageAsset } from '../types/image-asset';
 
-export const fetchFox = async (): Promise<ImageAsset> => {
-    const res = await fetch('https://randomfox.ca/floof/');
-    const data: { image: string } = await res.json();
-    return { url: data.image, type: 'fox' };
+export const fetchFoxes = async (n: number = 1): Promise<ImageAsset[]> => {
+    const promises = Array.from({ length: n }, () =>
+        fetch('https://randomfox.ca/floof/').then((res) => res.json()),
+    );
+    const results = await Promise.all(promises);
+    return results.map((data: { image: string }) => ({ url: data.image, type: 'fox' }));
 };
+
 export const fetchDogs = async (number: number): Promise<ImageAsset[]> => {
-    const res = await fetch(`https://api.thedogapi.com/v1/images/search?limit=${number}`);
+    const res = await fetch(`https://api.thedogapi.com/v1/images/search?limit=${number}`, {
+        headers: {
+            'x-api-key': import.meta.env.VITE_DOG_API_KEY,
+        },
+    });
     const data: { url: string }[] = await res.json();
-    return data.splice(number).map((item) => ({ url: item.url, type: 'dog' })); // Note the limit query param does not work, therefore using splice...
+    return data.map((item) => ({ url: item.url, type: 'dog' }));
 };
 export const fetchCats = async (number: number): Promise<ImageAsset[]> => {
-    const res = await fetch(`https://api.thecatapi.com/v1/images/search?limit=${number}`);
+    const res = await fetch(`https://api.thecatapi.com/v1/images/search?limit=${number}`, {
+        headers: {
+            'x-api-key': import.meta.env.VITE_CAT_API_KEY,
+        },
+    });
     const data: { url: string }[] = await res.json();
-    return data.splice(number).map((item) => ({ url: item.url, type: 'cat' })); // Note the limit query param does not work, therefore using splice...
+    return data.map((item) => ({ url: item.url, type: 'cat' }));
 };
-function preloadImage(url: string): Promise<void> {
+export const preloadImage = (url: string): Promise<void> => {
     return new Promise((resolve) => {
         const img = new Image();
         img.src = url;
         img.onload = () => resolve();
     });
-}
-export const fetchBatch = async (): Promise<ImageAsset[]> => {
-    const [fox, dogs, cats] = await Promise.all([fetchFox(), fetchDogs(4), fetchCats(4)]);
-    const all = [fox, ...dogs, ...cats];
-    console.log({ all });
-    const shuffled = all.sort(() => Math.random() - 0.5);
-    await Promise.all(shuffled.map((a) => preloadImage(a.url)));
-    return shuffled;
 };

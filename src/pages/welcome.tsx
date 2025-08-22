@@ -1,12 +1,15 @@
 import clsx from 'clsx';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { ImageFetcher } from '../lib/image-fetcher';
+import { IMAGES_TO_PREFETCH } from '../constants/misc';
 
 type WelcomeScreenStep = 'enter-name' | 'start-game';
 
 export const Welcome = () => {
     const [nameInputValue, setNameInputValue] = useState<string>('');
     const [step, setStep] = useState<WelcomeScreenStep>('enter-name');
+    const [isPreFetchingImages, setIsPrefetchingImages] = useState<boolean>(false);
 
     const navigate = useNavigate();
 
@@ -23,6 +26,11 @@ export const Welcome = () => {
     };
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (!isPreFetchingImages) {
+            ImageFetcher.fetchNextBatch(IMAGES_TO_PREFETCH);
+            setIsPrefetchingImages(true);
+        }
+
         const key = e.key;
         if (key === 'Enter' && buttonEnabled) {
             handlePlay();
@@ -34,6 +42,8 @@ export const Welcome = () => {
             navigate('/game');
         }
     };
+
+    // TODO: Loading State on Prefetch!!!!
 
     return (
         <section className="mx-auto flex h-svh w-full flex-col justify-between py-8 md:w-1/2 lg:w-1/3">
