@@ -29,7 +29,7 @@ export const useTimer = (seconds: number, onEnd: () => void) => {
                 }
                 return t - 1;
             });
-        }, 1000);
+        }, 1_000);
 
         return () => {
             if (intervalRef.current) clearInterval(intervalRef.current);

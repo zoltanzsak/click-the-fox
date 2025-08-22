@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ImageFetcher } from '../lib/image-fetcher';
 import { IMAGES_TO_PREFETCH } from '../constants/misc';
@@ -9,9 +9,17 @@ type WelcomeScreenStep = 'enter-name' | 'start-game';
 export const Welcome = () => {
     const [nameInputValue, setNameInputValue] = useState<string>('');
     const [step, setStep] = useState<WelcomeScreenStep>('enter-name');
-    const [isPreFetchingImages, setIsPrefetchingImages] = useState<boolean>(false);
+    const [areImagesPrefetched, setAreImagesPrefetched] = useState<boolean>(false);
+    const [isButtonPressed, setIsButtonPressed] = useState(false);
 
     const navigate = useNavigate();
+
+    useEffect(() => {
+        console.log({ isButtonPressed, areImagesPrefetched });
+        if (isButtonPressed && areImagesPrefetched) {
+            navigate('/game');
+        }
+    }, [isButtonPressed, areImagesPrefetched]);
 
     const buttonEnabled = !!nameInputValue.trim();
     const inputLabel = step === 'enter-name' ? 'Name:' : 'Hello';
@@ -25,10 +33,10 @@ export const Welcome = () => {
         }
     };
 
-    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        if (!isPreFetchingImages) {
-            ImageFetcher.fetchNextBatch(IMAGES_TO_PREFETCH);
-            setIsPrefetchingImages(true);
+    const handleKeyDown = async (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (!areImagesPrefetched) {
+            await ImageFetcher.fetchNextBatch(IMAGES_TO_PREFETCH);
+            setAreImagesPrefetched(true);
         }
 
         const key = e.key;
@@ -39,11 +47,11 @@ export const Welcome = () => {
 
     const handlePlay = () => {
         if (buttonEnabled) {
-            navigate('/game');
+            setIsButtonPressed(true);
         }
     };
 
-    // TODO: Loading State on Prefetch!!!!
+    if (isButtonPressed && !areImagesPrefetched) return <div>Your game is loading...</div>;
 
     return (
         <section className="mx-auto flex h-svh w-full flex-col justify-between py-8 md:w-1/2 lg:w-1/3">
