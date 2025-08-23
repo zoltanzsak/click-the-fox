@@ -19,7 +19,6 @@ export const Game = () => {
     useEffect(() => {
         const isFetching =
             batches.length > 0 && ImageFetcher.getCurrentlyFetchingIndex() <= currentBatchIndex;
-        console.log('dbg----', isFetching, batches.length);
         if (batches.length === 0 && !isFetching) navigate('/');
     }, [batches.length, currentBatchIndex]);
 
