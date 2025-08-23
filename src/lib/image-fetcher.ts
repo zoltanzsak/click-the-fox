@@ -1,5 +1,6 @@
 import type { ImageAsset } from '../types/image-asset';
 import { fetchFoxes, fetchDogs, fetchCats, preloadImage } from '../utils/game-utils';
+import { mutatingShuffle, nonMutatingShuffle } from '../utils/shuffle';
 
 const DOG_PER_PAGE = 4;
 const CAT_PER_PAGE = 4;
@@ -19,17 +20,22 @@ export class ImageFetcher {
             fetchCats(CAT_PER_PAGE * n),
         ]);
 
-        const shuffled = Array.from({ length: n }).map((_, idx) =>
-            [
+        const shuffled = nonMutatingShuffle(
+            Array.from({ length: n }).map((_, idx) => [
                 foxes[idx],
                 ...dogs.slice(idx * DOG_PER_PAGE, (idx + 1) * DOG_PER_PAGE),
                 ...cats.slice(idx * CAT_PER_PAGE, (idx + 1) * CAT_PER_PAGE),
-            ].sort(() => Math.random() - 0.5),
+            ]),
         );
 
         shuffled.forEach((batch) => batch.forEach((a) => preloadImage(a.url)));
 
         this.batches.push(...shuffled);
         this.currentlyFetchingIndex += shuffled.length;
+    }
+
+    static reShuffleBatches() {
+        mutatingShuffle(this.batches);
+        this.batches.forEach((batch) => mutatingShuffle(batch));
     }
 }

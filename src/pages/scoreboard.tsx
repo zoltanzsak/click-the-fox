@@ -1,12 +1,15 @@
 import { useEffect, useState } from 'react';
 import { readScoreBoardDataFromLocalStorage } from '../utils/local-storage';
 import type { ScoreBoardRecord } from '../types/score-board-record';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import clsx from 'clsx';
 import { readPlayerNameFromSessionStorage } from '../utils/session-storage';
+import { ImageFetcher } from '../lib/image-fetcher';
 
 export const ScoreBoard = () => {
     const [data, setData] = useState<ScoreBoardRecord[]>([]);
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         const scores = readScoreBoardDataFromLocalStorage();
@@ -14,6 +17,11 @@ export const ScoreBoard = () => {
     }, []);
 
     const currentPlayer = readPlayerNameFromSessionStorage();
+
+    const navigateToGameScreen = () => {
+        ImageFetcher.reShuffleBatches();
+        navigate('/game');
+    };
 
     return (
         <div className="flex h-full flex-col justify-evenly py-32">
@@ -55,7 +63,7 @@ export const ScoreBoard = () => {
             )}
             <div className="flex w-full justify-evenly">
                 <Link to="/">To Welcome Screen</Link>
-                <Link to="/game">Play</Link>
+                <button onClick={navigateToGameScreen}>Play</button>
             </div>
         </div>
     );
