@@ -1,3 +1,4 @@
+import { IMAGE_SIZE } from '../constants/misc';
 import type { ImageAsset } from '../types/image-asset';
 
 export const fetchFoxes = async (n: number = 1): Promise<ImageAsset[]> => {
@@ -9,26 +10,32 @@ export const fetchFoxes = async (n: number = 1): Promise<ImageAsset[]> => {
 };
 
 export const fetchDogs = async (number: number): Promise<ImageAsset[]> => {
-    const res = await fetch(`https://api.thedogapi.com/v1/images/search?limit=${number}`, {
-        headers: {
-            'x-api-key': import.meta.env.VITE_DOG_API_KEY,
+    const res = await fetch(
+        `https://api.thedogapi.com/v1/images/search?limit=${number}&size=small`,
+        {
+            headers: {
+                'x-api-key': import.meta.env.VITE_DOG_API_KEY,
+            },
         },
-    });
+    );
     const data: { url: string }[] = await res.json();
     return data.map((item) => ({ url: item.url, type: 'dog' }));
 };
 export const fetchCats = async (number: number): Promise<ImageAsset[]> => {
-    const res = await fetch(`https://api.thecatapi.com/v1/images/search?limit=${number}`, {
-        headers: {
-            'x-api-key': import.meta.env.VITE_CAT_API_KEY,
+    const res = await fetch(
+        `https://api.thecatapi.com/v1/images/search?limit=${number}&size=small`,
+        {
+            headers: {
+                'x-api-key': import.meta.env.VITE_CAT_API_KEY,
+            },
         },
-    });
+    );
     const data: { url: string }[] = await res.json();
     return data.map((item) => ({ url: item.url, type: 'cat' }));
 };
 export const preloadImage = (url: string): Promise<void> => {
     return new Promise((resolve) => {
-        const img = new Image();
+        const img = new Image(IMAGE_SIZE, IMAGE_SIZE);
         img.src = url;
         img.onload = () => resolve();
     });

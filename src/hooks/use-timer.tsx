@@ -19,11 +19,13 @@ export const useTimer = (seconds: number, onEnd: () => void) => {
     useEffect(() => {
         if (!running) return;
 
+        if (intervalRef.current) return;
+
         intervalRef.current = setInterval(() => {
             setTimeLeft((t) => {
                 if (t <= 1) {
                     clearInterval(intervalRef.current!);
-                    callbackRef.current();
+                    setTimeout(() => callbackRef.current(), 0); // Force the call only after the state update is done
                     setRunning(false);
                     return 0;
                 }
