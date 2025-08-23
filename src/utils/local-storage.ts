@@ -26,8 +26,19 @@ export const writeScoreBoardDataToLocalStorage = (record: ScoreBoardRecord) => {
             ...currentScoreBoardData.slice(insertAt),
         ];
     }
-    localStorage.setItem(LOCALSTORAGE_SCOREBOARD_KEY, JSON.stringify(newData));
+
+    const encoded = btoa(JSON.stringify(newData));
+
+    localStorage.setItem(LOCALSTORAGE_SCOREBOARD_KEY, encoded);
 };
 export const readScoreBoardDataFromLocalStorage = (): ScoreBoardRecord[] => {
-    return JSON.parse(localStorage.getItem(LOCALSTORAGE_SCOREBOARD_KEY) || '[]');
+    const encoded = localStorage.getItem(LOCALSTORAGE_SCOREBOARD_KEY);
+    if (!encoded) return [];
+    try {
+        const json = atob(encoded);
+        return JSON.parse(json);
+    } catch {
+        sessionStorage.setItem(LOCALSTORAGE_SCOREBOARD_KEY, '[]'); // At this point, someone tried to cheat - so we wipe scoreboard
+        return [];
+    }
 };
