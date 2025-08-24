@@ -36,7 +36,23 @@ export const fetchCats = async (number: number): Promise<ImageAsset[]> => {
 export const preloadImage = (url: string): Promise<void> => {
     return new Promise((resolve) => {
         const img = new Image(IMAGE_SIZE, IMAGE_SIZE);
+        let settled = false;
+
+        const onSettle = () => {
+            if (settled) return;
+            settled = true;
+            resolve();
+
+            // cleanup handlers
+            img.onload = null;
+            img.onerror = null;
+        };
+
+        img.onload = onSettle;
+        img.onerror = onSettle;
         img.src = url;
-        img.onload = () => resolve();
+
+        // add timeout
+        setTimeout(onSettle, 1_000);
     });
 };

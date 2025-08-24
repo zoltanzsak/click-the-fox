@@ -1,8 +1,12 @@
 import { SESSIONSTORAGE_NAME_KEY } from '../constants/misc';
+import { safeGet, safeSet, safeRemove } from './storage';
 
 export const writePlayerNameToSessionStorage = (playerName: string) => {
-    window.sessionStorage.setItem(SESSIONSTORAGE_NAME_KEY, playerName);
+    safeSet(window.sessionStorage, SESSIONSTORAGE_NAME_KEY, playerName);
 };
 
 export const readPlayerNameFromSessionStorage = (): string =>
-    window.sessionStorage.getItem(SESSIONSTORAGE_NAME_KEY) || '';
+    safeGet<string>(window.sessionStorage, SESSIONSTORAGE_NAME_KEY) ?? '';
+
+export const clearPlayerNameFromSessionStorage = () =>
+    safeRemove(window.sessionStorage, SESSIONSTORAGE_NAME_KEY);

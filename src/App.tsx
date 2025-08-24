@@ -11,7 +11,7 @@ export default function App() {
                 <Route element={<Layout />}>
                     <Route path="/score-board" element={<ScoreBoard />} />
                     <Route path="/game" element={<Game />} />
-                    <Route path="*" element={<Welcome />} />
+                    <Route path="/" element={<Welcome />} />
                 </Route>
             </Routes>
         </BrowserRouter>

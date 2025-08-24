@@ -8,30 +8,39 @@ const CAT_PER_PAGE = 4;
 export class ImageFetcher {
     private static batches: ImageAsset[][] = [];
     private static currentlyFetchingIndex = 0;
+    private static isFetching = false;
 
     static getBatches = () => this.batches;
     static getBatchByIndex = (idx: number) => this.batches[idx];
     static getCurrentlyFetchingIndex = () => this.currentlyFetchingIndex;
+    static getIsFetching = () => this.isFetching;
 
     static async fetchNextBatch(n: number = 1) {
-        const [foxes, dogs, cats] = await Promise.all([
-            fetchFoxes(n),
-            fetchDogs(DOG_PER_PAGE * n),
-            fetchCats(CAT_PER_PAGE * n),
-        ]);
+        this.isFetching = true;
+        try {
+            const [foxes, dogs, cats] = await Promise.all([
+                fetchFoxes(n),
+                fetchDogs(DOG_PER_PAGE * n),
+                fetchCats(CAT_PER_PAGE * n),
+            ]);
 
-        const shuffled = nonMutatingShuffle(
-            Array.from({ length: n }).map((_, idx) => [
-                foxes[idx],
-                ...dogs.slice(idx * DOG_PER_PAGE, (idx + 1) * DOG_PER_PAGE),
-                ...cats.slice(idx * CAT_PER_PAGE, (idx + 1) * CAT_PER_PAGE),
-            ]),
-        );
+            const shuffled = Array.from({ length: n }).map((_, idx) =>
+                nonMutatingShuffle([
+                    foxes[idx],
+                    ...dogs.slice(idx * DOG_PER_PAGE, (idx + 1) * DOG_PER_PAGE),
+                    ...cats.slice(idx * CAT_PER_PAGE, (idx + 1) * CAT_PER_PAGE),
+                ]),
+            );
 
-        shuffled.forEach((batch) => batch.forEach((a) => preloadImage(a.url)));
+            shuffled.forEach((batch) => batch.forEach((a) => preloadImage(a.url)));
 
-        this.batches.push(...shuffled);
-        this.currentlyFetchingIndex += shuffled.length;
+            this.batches.push(...shuffled);
+            this.currentlyFetchingIndex += shuffled.length;
+        } catch {
+            console.error('Failed to fetch next Batch');
+        } finally {
+            this.isFetching = false;
+        }
     }
 
     static reShuffleBatches() {

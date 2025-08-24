@@ -1,6 +1,7 @@
 import { LOCALSTORAGE_SCOREBOARD_KEY } from '../constants/misc';
 import type { ScoreBoardRecord } from '../types/score-board-record';
 import { insertRecordSorted } from './array-utils';
+import { safeGet, safeSet } from './storage';
 
 export const writeScoreBoardDataToLocalStorage = (record: ScoreBoardRecord) => {
     const currentScoreBoardData: ScoreBoardRecord[] = readScoreBoardDataFromLocalStorage();
@@ -13,11 +14,15 @@ export const writeScoreBoardDataToLocalStorage = (record: ScoreBoardRecord) => {
     if (foundIndex !== -1) {
         const foundRecord = currentScoreBoardData[foundIndex];
 
+        // if there is a new highscore, remove old and insert a new without mutating original
         if (record.score > foundRecord.score) {
             newData.splice(foundIndex, 1);
-            foundRecord.score = record.score;
-            foundRecord.dateString = record.dateString;
-            newData = insertRecordSorted(newData, foundRecord);
+            const updated: ScoreBoardRecord = {
+                player: foundRecord.player,
+                score: record.score,
+                dateString: record.dateString,
+            };
+            newData = insertRecordSorted(newData, updated);
         } else {
             return;
         }
@@ -25,18 +30,10 @@ export const writeScoreBoardDataToLocalStorage = (record: ScoreBoardRecord) => {
         newData = insertRecordSorted(newData, record);
     }
 
-    const encoded = btoa(JSON.stringify(newData));
-    localStorage.setItem(LOCALSTORAGE_SCOREBOARD_KEY, encoded);
+    safeSet(localStorage, LOCALSTORAGE_SCOREBOARD_KEY, newData);
 };
 
 export const readScoreBoardDataFromLocalStorage = (): ScoreBoardRecord[] => {
-    const encoded = localStorage.getItem(LOCALSTORAGE_SCOREBOARD_KEY);
-    if (!encoded) return [];
-    try {
-        const json = atob(encoded);
-        return JSON.parse(json);
-    } catch {
-        sessionStorage.setItem(LOCALSTORAGE_SCOREBOARD_KEY, '[]'); // At this point, someone tried to cheat - so we wipe scoreboard
-        return [];
-    }
+    const data = safeGet<ScoreBoardRecord[]>(localStorage, LOCALSTORAGE_SCOREBOARD_KEY);
+    return data ?? [];
 };

@@ -2,7 +2,7 @@ import clsx from 'clsx';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ImageFetcher } from '../lib/image-fetcher';
-import { IMAGES_TO_PREFETCH } from '../constants/misc';
+import { BATCHES_TO_PREFETCH } from '../constants/misc';
 import {
     readPlayerNameFromSessionStorage,
     writePlayerNameToSessionStorage,
@@ -27,10 +27,12 @@ export const Welcome = () => {
 
     useEffect(() => {
         if (!areImagesPrefetched) {
-            ImageFetcher.fetchNextBatch(IMAGES_TO_PREFETCH).then(() =>
+            // Prefetch in background
+            ImageFetcher.fetchNextBatch(BATCHES_TO_PREFETCH).then(() =>
                 setAreImagesPrefetched(true),
             );
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {
@@ -39,6 +41,7 @@ export const Welcome = () => {
 
             navigate('/game');
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isButtonPressed, areImagesPrefetched]);
 
     const buttonEnabled = !!nameInputValue.trim();
@@ -88,7 +91,11 @@ export const Welcome = () => {
                     />
                 </div>
             </div>
-            <button disabled={!buttonEnabled} onClick={handlePlay}>
+            <button
+                disabled={!buttonEnabled}
+                onClick={handlePlay}
+                className="disabled:!bg-white disabled:!text-black"
+            >
                 PLAY!
             </button>
         </section>

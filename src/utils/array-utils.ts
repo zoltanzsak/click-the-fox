@@ -1,10 +1,17 @@
 import type { ScoreBoardRecord } from '../types/score-board-record';
 
-export const mutatingShuffle = <T extends unknown[]>(arr: T): T =>
-    arr.sort(() => Math.random() - 0.5);
+// Non Biased Shuffle (https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle)
+export const mutatingShuffle = <T>(arr: T[]): T[] => {
+    for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+};
 
-export const nonMutatingShuffle = <T extends unknown[]>(arr: T): T =>
-    [...arr].sort(() => Math.random() - 0.5) as T;
+export const nonMutatingShuffle = <T>(arr: T[]): T[] => {
+    return mutatingShuffle([...arr]);
+};
 
 export const insertRecordSorted = (
     data: ScoreBoardRecord[],
