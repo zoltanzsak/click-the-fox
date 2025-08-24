@@ -1,5 +1,5 @@
 import { http, HttpResponse } from 'msw';
-import { CAT_PER_PAGE, DOG_PER_PAGE } from '../../constants/misc';
+import { CAT_PER_PAGE, DOG_PER_PAGE } from '../../config/constants';
 
 export const handlers = [
     http.get('https://randomfox.ca/floof/', ({ request }) => {

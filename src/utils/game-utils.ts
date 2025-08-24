@@ -1,4 +1,4 @@
-import { CAT_API_KEY, DOG_API_KEY, IMAGE_SIZE } from '../constants/misc';
+import { CAT_API_KEY, DOG_API_KEY, IMAGE_SIZE } from '../config/constants';
 import type { ImageAsset } from '../types/image-asset';
 
 export const fetchFoxes = async (n: number = 1): Promise<ImageAsset[]> => {

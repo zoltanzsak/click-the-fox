@@ -7,7 +7,7 @@ import {
     IMAGE_SIZE,
     BATCHES_TO_PREFETCH,
     CLICK_THROTTLE_MS,
-} from '../constants/misc';
+} from '../config/constants';
 import clsx from 'clsx';
 import { useNavigate } from 'react-router-dom';
 import { readPlayerNameFromSessionStorage } from '../utils/session-storage';

@@ -1,4 +1,4 @@
-import { SESSIONSTORAGE_NAME_KEY } from '../constants/misc';
+import { SESSIONSTORAGE_NAME_KEY } from '../config/constants';
 import { safeGet, safeSet, safeRemove } from './storage';
 
 export const writePlayerNameToSessionStorage = (playerName: string) => {
