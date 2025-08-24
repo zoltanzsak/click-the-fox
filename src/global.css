@@ -8,7 +8,7 @@ h1 {
 
 button,
 a {
-    @apply rounded-lg border-2 border-yellow-400 bg-yellow-600 p-2 px-4 text-white disabled:bg-white disabled:text-black;
+    @apply cursor-pointer rounded-lg border-2 border-yellow-400 bg-yellow-600 p-2 px-4 text-white disabled:cursor-default disabled:bg-white disabled:text-black;
 }
 
 .auto-grow {
