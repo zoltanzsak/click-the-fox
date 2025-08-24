@@ -1,9 +1,7 @@
 import type { ImageAsset } from '../types/image-asset';
 import { fetchFoxes, fetchDogs, fetchCats, preloadImage } from '../utils/game-utils';
 import { mutatingShuffle, nonMutatingShuffle } from '../utils/array-utils';
-
-const DOG_PER_PAGE = 4;
-const CAT_PER_PAGE = 4;
+import { CAT_PER_PAGE, DOG_PER_PAGE } from '../constants/misc';
 
 export class ImageFetcher {
     private static batches: ImageAsset[][] = [];
@@ -14,6 +12,13 @@ export class ImageFetcher {
     static getBatchByIndex = (idx: number) => this.batches[idx];
     static getCurrentlyFetchingIndex = () => this.currentlyFetchingIndex;
     static getIsFetching = () => this.isFetching;
+
+    // For testing
+    static resetFields = () => {
+        this.batches = [];
+        this.currentlyFetchingIndex = 0;
+        this.isFetching = false;
+    };
 
     static async fetchNextBatch(n: number = 1) {
         this.isFetching = true;
