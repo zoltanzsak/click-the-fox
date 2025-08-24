@@ -2,7 +2,7 @@
 
 https://click-the-fox.vercel.app/
 
-Small game that you can play on your machine. <br/>
+Small game that you can play in your browser. <br/>
 **Goal:** Click the fox as many times as you can!
 
 ## Table of Contents
@@ -36,13 +36,14 @@ npm run format
 
 ## Decision Records
 
-| Topic      | Decision                           | Decision Driving Factors                                                                                              |
-| ---------- | ---------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
-| Framework  | React with TS                      | user-interaction based client side frontend-app, and dev expertiese                                                   |
-| Styling    | TailwindCss                        | inline styling in a dev friendly way                                                                                  |
-| Storage    | Browser Storages (session & local) | size & scope of the project                                                                                           |
-| Deployment | Vercel                             | cheap and dev-friendly                                                                                                |
-| Throttle   | 400ms                              | as per researches, professional gamers has a ~300ms reaction time, adding +100ms for the mouse movement and the click |
+| Topic                   | Decision                           | Decision Driving Factors                                                                                              |
+| ----------------------- | ---------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| Framework               | React with TS                      | user-interaction based client side frontend-app, and dev expertiese                                                   |
+| Styling                 | TailwindCss                        | inline styling in a dev friendly way                                                                                  |
+| Storage                 | Browser Storages (session & local) | size & scope of the project                                                                                           |
+| Deployment              | Vercel                             | cheap and dev-friendly                                                                                                |
+| Throttle                | 400ms                              | as per researches, professional gamers has a ~300ms reaction time, adding +100ms for the mouse movement and the click |
+| Design & responsiveness | minimal / disregarded              | based on requirements                                                                                                 |
 
 ## Environment Variables
 
