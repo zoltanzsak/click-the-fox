@@ -12,11 +12,15 @@ type WelcomeScreenStep = 'enter-name' | 'start-game';
 
 export const Welcome = () => {
     const playerName = readPlayerNameFromSessionStorage();
-    const batchesLength = ImageFetcher.getBatches().length;
 
     const [nameInputValue, setNameInputValue] = useState<string>(playerName);
-    const [step, setStep] = useState<WelcomeScreenStep>('enter-name');
+
+    const initialStep: WelcomeScreenStep = nameInputValue.length > 0 ? 'start-game' : 'enter-name';
+    const [step, setStep] = useState<WelcomeScreenStep>(initialStep);
+
+    const batchesLength = ImageFetcher.getBatches().length;
     const [areImagesPrefetched, setAreImagesPrefetched] = useState<boolean>(batchesLength > 0);
+
     const [isButtonPressed, setIsButtonPressed] = useState(false);
 
     const navigate = useNavigate();

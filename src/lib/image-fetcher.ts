@@ -1,6 +1,6 @@
 import type { ImageAsset } from '../types/image-asset';
 import { fetchFoxes, fetchDogs, fetchCats, preloadImage } from '../utils/game-utils';
-import { mutatingShuffle, nonMutatingShuffle } from '../utils/shuffle';
+import { mutatingShuffle, nonMutatingShuffle } from '../utils/array-utils';
 
 const DOG_PER_PAGE = 4;
 const CAT_PER_PAGE = 4;

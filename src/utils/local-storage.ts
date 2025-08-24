@@ -1,36 +1,34 @@
 import { LOCALSTORAGE_SCOREBOARD_KEY } from '../constants/misc';
 import type { ScoreBoardRecord } from '../types/score-board-record';
+import { insertRecordSorted } from './array-utils';
 
 export const writeScoreBoardDataToLocalStorage = (record: ScoreBoardRecord) => {
     const currentScoreBoardData: ScoreBoardRecord[] = readScoreBoardDataFromLocalStorage();
+    let newData: ScoreBoardRecord[] = [...currentScoreBoardData];
 
-    const foundRecord = currentScoreBoardData.find(
+    const foundIndex = currentScoreBoardData.findIndex(
         (scoreRecord) => scoreRecord.player === record.player,
     );
 
-    let newData;
+    if (foundIndex !== -1) {
+        const foundRecord = currentScoreBoardData[foundIndex];
 
-    if (foundRecord) {
         if (record.score > foundRecord.score) {
+            newData.splice(foundIndex, 1);
             foundRecord.score = record.score;
             foundRecord.dateString = record.dateString;
-            newData = currentScoreBoardData;
-        } else return; // if the player already has record, and he made poorer performance, we don't save it
+            newData = insertRecordSorted(newData, foundRecord);
+        } else {
+            return;
+        }
     } else {
-        const desiredIndex = currentScoreBoardData.findIndex((data) => data.score < record.score);
-        const insertAt = desiredIndex === -1 ? currentScoreBoardData.length : desiredIndex;
-
-        newData = [
-            ...currentScoreBoardData.slice(0, insertAt),
-            record,
-            ...currentScoreBoardData.slice(insertAt),
-        ];
+        newData = insertRecordSorted(newData, record);
     }
 
     const encoded = btoa(JSON.stringify(newData));
-
     localStorage.setItem(LOCALSTORAGE_SCOREBOARD_KEY, encoded);
 };
+
 export const readScoreBoardDataFromLocalStorage = (): ScoreBoardRecord[] => {
     const encoded = localStorage.getItem(LOCALSTORAGE_SCOREBOARD_KEY);
     if (!encoded) return [];
