@@ -1,4 +1,4 @@
-import { IMAGE_SIZE } from '../constants/misc';
+import { CAT_API_KEY, DOG_API_KEY, IMAGE_SIZE } from '../constants/misc';
 import type { ImageAsset } from '../types/image-asset';
 
 export const fetchFoxes = async (n: number = 1): Promise<ImageAsset[]> => {
@@ -14,7 +14,7 @@ export const fetchDogs = async (number: number): Promise<ImageAsset[]> => {
         `https://api.thedogapi.com/v1/images/search?limit=${number}&size=small`,
         {
             headers: {
-                'x-api-key': import.meta.env.VITE_DOG_API_KEY,
+                'x-api-key': DOG_API_KEY,
             },
         },
     );
@@ -26,7 +26,7 @@ export const fetchCats = async (number: number): Promise<ImageAsset[]> => {
         `https://api.thecatapi.com/v1/images/search?limit=${number}&size=small`,
         {
             headers: {
-                'x-api-key': import.meta.env.VITE_CAT_API_KEY,
+                'x-api-key': CAT_API_KEY,
             },
         },
     );

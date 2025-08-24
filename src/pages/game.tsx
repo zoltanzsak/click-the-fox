@@ -62,7 +62,7 @@ export const Game = () => {
                 <span>Score: {score}</span>
             </div>
 
-            {/* To prevent flickering on low-end devices we mount all the batches, and display only the current one */}
+            {/* To prevent flickering we mount all the batches, and display only the current one */}
             {batches.map((batch, batchIndex) => (
                 <div
                     key={batchIndex}

@@ -1,69 +1,53 @@
-# React + TypeScript + Vite
+# Click The Fox
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Small game that you can play on your machine. <br/>
+**Goal:** Click the fox as many times as you can!
 
-Currently, two official plugins are available:
+## Table of Contents
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- [Description](#description)
+    - [Installation](#installation)
+    - [Running the Application](#running-the-application)
+    - [Formatting code](#formatting-the-code)
+- [Architectural Decision Records (ADRs)](#architectural-decision-records-adrs)
+- [Environment Variables](#environment-variables)
 
-## Expanding the ESLint configuration
+## Description
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### Installation
 
-```js
-export default tseslint.config([
-    globalIgnores(['dist']),
-    {
-        files: ['**/*.{ts,tsx}'],
-        extends: [
-            // Other configs...
-
-            // Remove tseslint.configs.recommended and replace with this
-            ...tseslint.configs.recommendedTypeChecked,
-            // Alternatively, use this for stricter rules
-            ...tseslint.configs.strictTypeChecked,
-            // Optionally, add this for stylistic rules
-            ...tseslint.configs.stylisticTypeChecked,
-
-            // Other configs...
-        ],
-        languageOptions: {
-            parserOptions: {
-                project: ['./tsconfig.node.json', './tsconfig.app.json'],
-                tsconfigRootDir: import.meta.dirname,
-            },
-            // other options...
-        },
-    },
-]);
+```bash
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### Running the Application
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x';
-import reactDom from 'eslint-plugin-react-dom';
-
-export default tseslint.config([
-    globalIgnores(['dist']),
-    {
-        files: ['**/*.{ts,tsx}'],
-        extends: [
-            // Other configs...
-            // Enable lint rules for React
-            reactX.configs['recommended-typescript'],
-            // Enable lint rules for React DOM
-            reactDom.configs.recommended,
-        ],
-        languageOptions: {
-            parserOptions: {
-                project: ['./tsconfig.node.json', './tsconfig.app.json'],
-                tsconfigRootDir: import.meta.dirname,
-            },
-            // other options...
-        },
-    },
-]);
+```bash
+npm run dev
 ```
+
+### Formatting the code
+
+```bash
+npm run format
+```
+
+## Decision Records
+
+| Topic      | Decision                           | Decision Driving Factors                                                                                             |
+| ---------- | ---------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| Framework  | React with TS                      | user-interaction based client side frontend-app, and dev expertiese                                                  |
+| Styling    | TailwindCss                        | inline styling in a dev friendly way                                                                                 |
+| Storage    | Browser Storages (session & local) | size & scope of the project                                                                                          |
+| Deployment | Vercel                             | cheap and dev-friendly                                                                                               |
+| Throttle   | 400ms                              | as per researches, professional gamers has a ~300ms reaction time adding +100ms for the mouse movement and the click |
+
+## Environment Variables
+
+A list of environment variables required to run the application. <br/>
+**DISCLAIMER:** With defined but not valid api key, it still works, but API responses can be unexpected
+
+| Variable           | Description              |
+| ------------------ | ------------------------ |
+| `VITE_DOG_API_KEY` | API key for the Dog API. |
+| `VITE_CAT_API_KEY` | API key for the Cat API. |
