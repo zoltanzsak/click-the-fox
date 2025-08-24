@@ -2,7 +2,7 @@ import clsx from 'clsx';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ImageFetcher } from '../lib/image-fetcher';
-import { BATCHES_TO_PREFETCH } from '../constants/misc';
+import { BATCHES_TO_PREFETCH } from '../config/constants';
 import {
     readPlayerNameFromSessionStorage,
     writePlayerNameToSessionStorage,
@@ -82,7 +82,7 @@ export const Welcome = () => {
                         id="name-input"
                         className={clsx(
                             'w-full resize-none rounded-lg p-1 px-2 focus:outline-yellow-600',
-                            step === 'enter-name' && 'yellow-border',
+                            step === 'enter-name' && 'border-2 border-yellow-600',
                         )}
                         value={nameInputValue}
                         onChange={(e) => setNameInputValue(e.target.value)}

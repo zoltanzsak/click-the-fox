@@ -1,7 +1,7 @@
 import type { ImageAsset } from '../types/image-asset';
 import { fetchFoxes, fetchDogs, fetchCats, preloadImage } from '../utils/game-utils';
 import { mutatingShuffle, nonMutatingShuffle } from '../utils/array-utils';
-import { CAT_PER_PAGE, DOG_PER_PAGE } from '../constants/misc';
+import { CAT_PER_PAGE, DOG_PER_PAGE } from '../config/constants';
 
 export class ImageFetcher {
     private static batches: ImageAsset[][] = [];

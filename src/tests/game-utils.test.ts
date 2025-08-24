@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { http, HttpResponse } from 'msw';
 import { server } from './mocks/server';
 import { fetchCats, fetchDogs, fetchFoxes } from '../utils/game-utils';
-import { CAT_PER_PAGE, DOG_PER_PAGE } from '../constants/misc';
+import { CAT_PER_PAGE, DOG_PER_PAGE } from '../config/constants';
 
 describe('game-utils', () => {
     describe('fetchFoxes', () => {

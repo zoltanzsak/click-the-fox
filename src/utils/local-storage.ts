@@ -1,4 +1,4 @@
-import { LOCALSTORAGE_SCOREBOARD_KEY } from '../constants/misc';
+import { LOCALSTORAGE_SCOREBOARD_KEY } from '../config/constants';
 import type { ScoreBoardRecord } from '../types/score-board-record';
 import { insertRecordSorted } from './array-utils';
 import { safeGet, safeSet } from './storage';

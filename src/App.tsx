@@ -4,7 +4,7 @@ import { Game } from './pages/game';
 import { ScoreBoard } from './pages/scoreboard';
 import { Layout } from './components/layout';
 import { useEffect } from 'react';
-import { CAT_API_KEY, DOG_API_KEY } from './constants/misc';
+import { CAT_API_KEY, DOG_API_KEY } from './config/constants';
 import { initMockScoreBoard } from './utils/mock-scoreboard';
 
 export default function App() {
